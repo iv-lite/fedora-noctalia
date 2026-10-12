@@ -26,3 +26,11 @@ sudo systemctl daemon-reload
 sudo freshclam
 sudo systemctl enable --now clamav-freshclam
 sudo systemctl enable --now clamd@scan
+
+
+# Find and disable your current manager (e.g., gdm.service or sddm.service)
+sudo systemctl disable --now gdm.service
+# Enable greetd
+sudo systemctl enable --now greetd.service
+# Set your default system state to graphical and reboot
+sudo systemctl set-default graphical.target

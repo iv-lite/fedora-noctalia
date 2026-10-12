@@ -39,12 +39,6 @@ cargo install wayland-pipewire-idle-inhibit
 # noctalia greeter
 sudo dnf install --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
 sudo dnf install noctalia-greeter greetd
-# Find and disable your current manager (e.g., gdm.service or sddm.service)
-sudo systemctl disable --now gdm.service
-# Enable greetd
-sudo systemctl enable --now greetd.service
-# Set your default system state to graphical and reboot
-sudo systemctl set-default graphical.target
 
 ## gtk theme
 sudo dnf install \
