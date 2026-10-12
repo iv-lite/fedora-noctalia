@@ -12,6 +12,7 @@ export packages=" \
     fontawesome-fonts-all \
     google-roboto-fonts \
     logiops \
+    niri \
     noctalia \
     papirus-icon-theme-dark \
     rustup \
