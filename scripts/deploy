@@ -15,6 +15,13 @@ sudo systemctl enable dbus-broker.service
 sudo systemctl enable bluetooth.service
 sudo systemctl enable logid.service
 sudo systemctl disable gdm.service
+
+# Ensure the greetd greeter account exists and can access /dev/dri.
+if ! id greeter >/dev/null 2>&1; then
+    sudo useradd --system --no-create-home --shell /usr/sbin/nologin greeter
+fi
+sudo usermod -a -G video greeter
+
 sudo systemctl enable greetd.service
 
 sudo systemctl unmask firewalld

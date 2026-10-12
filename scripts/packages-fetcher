@@ -38,7 +38,7 @@ cargo install wayland-pipewire-idle-inhibit
 
 # noctalia greeter
 sudo dnf install --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
-sudo dnf install noctalia-greeter greetd
+sudo dnf install noctalia-greeter greetd greetd-selinux
 
 ## gtk theme
 sudo dnf install \
