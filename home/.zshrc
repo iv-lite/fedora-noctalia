@@ -1,5 +1,8 @@
 export PATH="$PATH:$HOME/.local/bin/"
 
+export ZSH_CACHE_DIR="$HOME/.cache/zsh"
+mkdir -p "$ZSH_CACHE_DIR/completions"
+
 source ~/antigen.zsh
 
 antigen use oh-my-zsh
