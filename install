@@ -3,6 +3,8 @@
 cd "$(dirname ${BASH_SOURCE[0]})"
 scripts_dir="$(pwd)/scripts"
 
+sudo dnf update
+
 read -r -p "Do you want to enable hibernation ? [y/N] " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     ${scripts_dir}/enable-hibernation

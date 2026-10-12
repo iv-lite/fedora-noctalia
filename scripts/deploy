@@ -40,4 +40,7 @@ sudo systemctl disable --now gdm.service
 # Enable greetd
 sudo systemctl enable  --now greetd.service
 
+sudo mkdir -p /var/lib/noctalia-greeter
+sudo chown -R greeter:greeter /var/lib/noctalia-greeter
 sudo noctalia-greeter passwordless-sync enable ${USER}
+pkexec noctalia-greeter-apply-appearance --sync "/run/user/$(id -u)/noctalia-greeter-sync"
