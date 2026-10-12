@@ -13,7 +13,7 @@ sudo cp -r ${basedir}/../etc/* /etc/
 
 sudo systemctl enable dbus-broker.service
 sudo systemctl enable bluetooth.service
-sudo systemctl enable logid.service
+sudo systemctl enable --now logid.service
 sudo systemctl disable gdm.service
 
 # Ensure the greetd greeter account exists and can access /dev/dri.
