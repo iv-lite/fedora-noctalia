@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+cd "$(dirname ${BASH_SOURCE[0]})"
+basedir="$(pwd)"
+
+sudo dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo usermod -aG docker $USER
+sudo systemctl enable --now docker
+newgrp docker
+
+docker context use default
+
+cd "${basedir}/../storage"
+git clone https://github.com/ROCm/container-toolkit.git
+cd container-toolkit
+make build-dev-container-rpm
+make pkg-rpm
+sudo dnf install ./bin/*.rpm
+
+amd-ctk runtime configure --runtime=docker --config-path $HOME/.docker/daemon.json
+sudo mkdir -p /etc/docker
+sudo cp $HOME/.docker/daemon.json /etc/docker/daemon.json

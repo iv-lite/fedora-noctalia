@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+cd "$(dirname ${BASH_SOURCE[0]})"
+basedir="$(pwd)"
+
+cp -r ${basedir}/../home/.config/* ${HOME}/.config/
+
+xdg-mime default org.gnome.Nautilus.desktop inode/directory
+xdg-mime default org.gnome.Nautilus.desktop x-directory/normal
+xdg-mime default org.gnome.Nautilus.desktop x-directory/gnome-default-handler
+
+sudo cp -r ${basedir}/../etc/* /etc/
+
+sudo systemctl enable dbus-broker.service
+sudo systemctl enable bluetooth.service
+sudo systemctl enable logid.service
+sudo systemctl disable gdm.service
+sudo systemctl enable greetd.service
+
+sudo systemctl unmask firewalld
+sudo systemctl enable firewalld
+
+sudo setsebool -P antivirus_can_scan_system 1
+sudo setsebool -P antivirus_use_jit 1
+sudo systemctl daemon-reload
+sudo freshclam
+sudo systemctl enable --now clamav-freshclam
+sudo systemctl enable --now clamd@scan

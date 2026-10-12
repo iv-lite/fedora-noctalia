@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+
+cd "$(dirname ${BASH_SOURCE[0]})"
+basedir="$(pwd)"
+
+sudo dnf install -y \
+    git \
+    @development-tools \
+    dnf-plugins-core
+
+## vscode
+sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" \
+    | sudo tee /etc/yum.repos.d/vscode.repo \
+    > /dev/null
+
+sudo dnf copr enable -y alternateved/cliphist
+sudo dnf copr enable -y scottames/ghostty
+
+sudo dnf check-update
+
+. ${basedir}/packages-list
+
+sudo dnf install -y --skip-unavailable \
+    ${packages}
+
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+flatpak install -y flathub io.missioncenter.MissionCenter
+
+rustup-init -y
+. "$HOME/.cargo/env"
+sudo dnf install  -y \
+    gtk4-devel \
+    pipewire-devel \
+    clang
+cargo install wayland-pipewire-idle-inhibit
+
+sudo dnf install --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
+sudo dnf install noctalia-greeter
+
+## gtk theme
+sudo dnf install \
+    gtk-murrine-engine \
+    gtk2-engines \
+    sassc
+cd  ${basedir}/../storage \
+&& git clone https://github.com/vinceliuice/Qogir-theme.git \
+&& cd Qogir-theme
+./install.sh --tweaks round -c dark -l
+sudo cp -r $HOME/.themes/Qogir-Round-Dark /usr/share/themes
+
+## hardware acceleration and rpmfusion
+sudo dnf install -y \
+    https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
+    https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm \
+&& sudo dnf -y config-manager setopt fedora-cisco-openh264.enabled=1 \
+&& sudo dnf -y swap ffmpeg-free ffmpeg --allowerasing \
+&& sudo dnf -y update @multimedia \
+    --setopt="install_weak_deps=False" \
+    --exclude=PackageKit-gstreamer-plugin \
+&& sudo dnf -y swap mesa-va-drivers mesa-va-drivers-freeworld \
+&& sudo dnf -y swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld \
+&& sudo dnf -y swap mesa-va-drivers.i686 mesa-va-drivers-freeworld.i686 \
+&& sudo dnf -y swap mesa-vdpau-drivers.i686 mesa-vdpau-drivers-freeworld.i686

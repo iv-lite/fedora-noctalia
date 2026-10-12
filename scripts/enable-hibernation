@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+swap_location=/swapfile
+total_memory=$(awk '/MemTotal/ { printf "%.3f \n", $2/1024/1024 }' /proc/meminfo)
+swap_size=$(($(printf "%.*f\n" 0 ${total_memory} ) + 1))
+swap_size_mb=$((${swap_size} * 1024))
+
+if [ -f ${swap_location} ]; then
+    sudo swapoff ${swap_location}
+    sudo rm ${swap_location}
+fi
+
+sudo btrfs filesystem mkswapfile --size ${swap_size}G ${swap_location}
+sudo swapon ${swap_location}
+
+if [ ! $(grep -q ${swap_location} /etc/fstab) ]; then
+    echo "#swapfile"$'\n'"${swap_location} none swap defaults,pri=0 0 0"$'\n' | sudo tee -a /etc/fstab
+    sudo bash -c 'echo add_dracutmodules+=\" resume \" > /etc/dracut.conf.d/resume.conf'
+    sudo dracut -f
+fi

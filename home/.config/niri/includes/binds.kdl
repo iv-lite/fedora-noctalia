@@ -1,0 +1,78 @@
+binds {
+    Ctrl+Up { toggle-overview; }
+    Ctrl+Alt+Right { focus-monitor-right; }
+    Ctrl+Alt+Left { focus-monitor-left; }
+    
+    Mod+Q { close-window; }
+    Mod+W {switch-preset-column-width;}
+    Mod+H {switch-preset-window-height;}
+    Mod+M { maximize-column; }
+    Mod+F { fullscreen-window; }
+    Mod+P { toggle-window-floating; }
+
+    Mod+Right { focus-column-right; }
+    Mod+Left { focus-column-left; }
+
+    Mod+Up { focus-workspace-up; }
+    Mod+Down { focus-workspace-down; }
+
+    Super+Alt+Left { move-column-left; }
+    Super+Alt+Right { move-column-right; }
+    Super+Alt+Up { move-window-up; }
+    Super+Alt+Down { move-window-down; }
+
+    Mod+Shift+C { consume-window-into-column; }
+    Mod+Shift+E { expel-window-from-column; }
+    Mod+Shift+Left { move-column-to-monitor-left; }
+    Mod+Shift+Right { move-column-to-monitor-right; }
+    Mod+Shift+Up { move-column-to-workspace-up; }
+    Mod+Shift+Down { move-column-to-workspace-down; }
+
+    Mod+WheelScrollDown cooldown-ms=150 { focus-workspace-down; }
+    Mod+WheelScrollUp   cooldown-ms=150 { focus-workspace-up; }
+    Mod+WheelScrollRight    { focus-column-right; }
+    Mod+WheelScrollLeft     { focus-column-left; }
+
+    // XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "pamixer -i 5"; }
+    // XF86AudioLowerVolume allow-when-locked=true { spawn-sh "pamixer -d 5"; }
+    // XF86AudioMicMute allow-when-locked=true { spawn-sh "pamixer --default-source -m"; }
+    // XF86AudioMute allow-when-locked=true { spawn-sh "pamixer -t"; }
+    // XF86AudioPlay allow-when-locked=true { spawn-sh "playerctl play-pause"; }
+    // XF86AudioPause allow-when-locked=true { spawn-sh "playerctl play-pause"; }
+    // XF86AudioNext allow-when-locked=true { spawn-sh "playerctl next"; }
+    // XF86AudioPrev allow-when-locked=true { spawn-sh "playerctl previous"; }
+    XF86AudioPlay allow-when-locked=true { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "media" "play"; }
+    XF86AudioPause allow-when-locked=true { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "media" "pause"; }
+    XF86AudioNext allow-when-locked=true { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "media" "next"; }
+    XF86AudioPrev allow-when-locked=true { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "media" "previous"; }
+    XF86AudioRaiseVolume { spawn-sh "noctalia msg volume-up"; }
+    XF86AudioLowerVolume { spawn-sh "noctalia msg volume-down"; }
+    XF86AudioMute { spawn-sh "noctalia msg volume-mute"; }
+    XF86MonBrightnessUp { spawn-sh "noctalia msg brightness-up"; }
+    XF86MonBrightnessDown { spawn-sh "noctalia msg brightness-down"; }
+
+
+    // XF86MonBrightnessUp allow-when-locked=true { spawn-sh "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d +0.05"; }
+    // XF86MonBrightnessDown allow-when-locked=true { spawn-sh "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d -0.05"; }
+
+    // Mod+Shift+L { spawn "hyprlock"; }
+    Mod+Shift+L { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "lockScreen" "lockAndSuspend"; }
+    Ctrl+Alt+F { spawn "nautilus"; }
+    Ctrl+Alt+T { spawn "ghostty"; }
+    Mod+Space { spawn-sh "noctalia msg panel-toggle launcher"; }
+    Mod+S { spawn-sh "noctalia msg panel-toggle control-center"; }
+    Mod+Comma { spawn-sh "noctalia msg settings-toggle"; }
+    Alt+Tab { spawn-sh "noctalia msg window-switcher"; }
+
+    Ctrl+Alt+S { spawn-sh "noctalia msg screenshot-region"; }
+}
+
+spawn-at-startup "dbus-update-activation-environment" "--all"
+spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
+spawn-at-startup "noctalia"
+spawn-sh-at-startup "nm-applet --indicator"
+spawn-sh-at-startup "gsettings set org.gnome.desktop.interface gtk-theme 'Qogir-Round-Dark'"
+spawn-sh-at-startup "gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'"
+spawn-sh-at-startup "gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'"
+spawn-sh-at-startup "gsettings set org.gnome.desktop.interface font-name 'Roboto Mono'"
+spawn-sh-at-startup "dconf write /org/gnome/desktop/interface/color-scheme '\"prefer-dark\"'"

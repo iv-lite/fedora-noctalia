@@ -1,0 +1,51 @@
+prefer-no-csd
+
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+environment {
+    GTK_IM_MODULE "simple"
+    GTK_THEME "Qogir-Round-Dark"
+    QT_QPA_PLATFORM "wayland;xcb"
+    ELECTRON_OZONE_PLATFORM_HINT "auto"
+    XDG_SESSION_TYPE "wayland"
+    // DISPLAY null
+}
+
+cursor {
+    xcursor-size 24
+}
+
+overview {
+    zoom 0.5
+    backdrop-color "#2b303cd6"
+
+    workspace-shadow {
+        // off
+        softness 40
+        spread 10
+        offset x=0 y=10
+        color "#2B303C"
+    }
+}
+
+xwayland-satellite {
+    path "xwayland-satellite"
+}
+
+clipboard {
+    disable-primary
+}
+
+hotkey-overlay {
+    skip-at-startup
+    hide-not-bound
+}
+
+config-notification {
+    disable-failed
+}
+
+debug {
+  // Allows notification actions and window activation from Noctalia.
+  honor-xdg-activation-with-invalid-serial
+}

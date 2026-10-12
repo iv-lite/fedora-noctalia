@@ -1,0 +1,42 @@
+input {
+    focus-follows-mouse max-scroll-amount="100%"
+
+    keyboard {
+        xkb {
+            layout "ch"
+            variant "fr"
+            options "terminate:ctrl_alt_bksp"
+        }
+
+        numlock
+    }
+
+    mouse {
+        // off
+        natural-scroll
+        // accel-speed 0.2
+        accel-profile "adaptive"
+        // scroll-factor 1.0
+        scroll-factor vertical=1.0 horizontal=-1.0
+        // scroll-method "no-scroll"
+        // scroll-button 273
+        // scroll-button-lock
+        // left-handed
+        // middle-emulation
+    }
+
+    touchpad {
+        // off
+        tap
+        natural-scroll
+        accel-speed 0.4
+        accel-profile "adaptive"
+        // scroll-factor 1.0
+        scroll-factor vertical=1.0 horizontal=-1.0
+        // scroll-method "no-scroll"
+        // scroll-button 273
+        // scroll-button-lock
+        // left-handed
+        // middle-emulation
+    }
+}

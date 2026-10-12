@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+export packages=" \
+    code \
+    clamav \
+    clamd \
+    clamav-freshclam \
+    clamtk \
+    flatpak \
+    ghostty \
+    qt6-qt5compat \
+    fontawesome-fonts-all \
+    google-roboto-fonts \
+    logiops \
+    noctalia \
+    papirus-icon-theme-dark \
+    rustup \
+    wlr-protocols-devel \
+    xdg-desktop-portal \
+    xdg-desktop-portal-gtk \
+    xdg-desktop-portal-gnome \
+    xwayland-satellite
+    "

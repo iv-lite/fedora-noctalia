@@ -1,0 +1,47 @@
+window-rule {
+    geometry-corner-radius 4
+    clip-to-geometry true
+    tiled-state true
+    open-focused true
+    variable-refresh-rate true
+
+    background-effect {
+        blur true
+        xray false
+    }
+}
+
+/* Enable blur on noctalia's window switcher and disable xray. */
+layer-rule {
+    match namespace="noctalia-window-switcher"
+    background-effect {
+        blur true
+        xray false
+    }
+}
+
+/* You can also fine-tune the blur effect globally. */
+blur {
+  passes 2        // more passes = stronger blur (default: 3)
+  offset 3.0      // sample distance per pass (default: 3.0)
+  noise 0.03      // grain overlay (default: 0.02)
+  saturation 1.0  // color saturation boost (default: 1.5)
+}
+
+window-rule {
+    match is-active=false
+    opacity 0.8
+}
+
+window-rule {
+    match app-id="firefox"
+    match app-id="code"
+
+    open-maximized true
+}
+
+window-rule {
+    match app-id="com.mitchellh.ghostty"
+
+    default-column-width { proportion 0.75; }
+}

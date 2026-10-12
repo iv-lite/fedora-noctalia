@@ -1,0 +1,5 @@
+#!/usr/bin/bash
+
+sed -i -e ':a;N;$!ba;s/\n}/,\n\t"password-store": "gnome-libsecret"\n}/g' \
+    ${HOME}/.vscode/argv.json
+echo "Restart vscode for changes to be applied."
