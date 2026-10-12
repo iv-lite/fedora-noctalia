@@ -5,12 +5,15 @@ scripts_dir="$(pwd)/scripts"
 
 ${scripts_dir}/packages-fetcher
 ${scripts_dir}/deploy
-${scripts_dir}/enable-hibernation
 
+read -r -p "Do you want to enable hibernation ? [y/N] " response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+    ${scripts_dir}/enable-hibernation
+fi
 
 read -r -p "Do you want to install oh-my-zsh ? [y/N] " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-    ${scripts_dir}/antigen
+    ${scripts_dir}/install-antigen
 fi
 
 read -r -p "Do you want to reboot ? [y/N] " response
