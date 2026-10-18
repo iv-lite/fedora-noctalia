@@ -39,9 +39,3 @@ window-rule {
 
     open-maximized true
 }
-
-window-rule {
-    match app-id="com.mitchellh.ghostty"
-
-    default-column-width { proportion 0.75; }
-}
