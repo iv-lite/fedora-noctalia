@@ -1,406 +1,60 @@
-# Noctalia configuration: adapted to current version (v5+).
-# Based on the upstream example.toml with local customizations preserved.
-
-# ── Accessibility ─────────────────────────────────────────────────────────────
-
 [accessibility]
-ui_scale = 1.0
 high_contrast = false
-
-# ── Shell ─────────────────────────────────────────────────────────────────────
-
-[shell]
-corner_radius_scale   = 1.0
-font_family           = "Font Awesome 5 Free Regular"
-time_format           = "{:%H:%M}"
-date_format           = "%A, %x"
-offline_mode          = false
-telemetry_enabled     = false
-niri_overview_type_to_launch_enabled = false
-polkit_agent          = true
-password_style        = "default"
-readline_shortcuts    = false
-settings_show_advanced = true
-settings_expand_all_groups = false
-show_location         = true
-app_icon_colorize     = false
-app_icon_color        = "on_surface"
-clipboard_enabled     = true
-clipboard_history_max_entries = 100
-clipboard_keep_from_closed_apps = true
-clipboard_auto_paste  = "auto"
-clipboard_image_action_command = ""
-shared_gl_context     = true
-lang                  = ""
-show_close_buttons    = true
-
-[shell.screenshot]
-skip_annotate_on_copy_save = false
-close_on_copy = true
-close_on_save = true
-
-[shell.privacy]
-mic_filter_regex = ""
-cam_filter_regex = ""
-screen_filter_regex = ""
-
-[shell.animation]
-enabled = true
-speed   = 1.0
-
-[shell.shadow]
-direction = "down"
-alpha     = 0.55
-
-[shell.panel]
-transparency_mode     = "glass"
-borders               = false
-border_color          = "outline"
-border_width          = 1.0
-shadow                = true
-launcher_placement       = "attached"
-clipboard_placement      = "floating"
-control_center_placement = "attached"
-wallpaper_placement      = "attached"
-session_placement        = "attached"
-clipboard_position       = "center"
-open_near_click_launcher = true
-polkit_placement         = "attached"
-polkit_position          = "center"
-
-[shell.launcher]
-layout = "full"
-width = 760
-search_position = "top"
-default_view   = "recent"
-categories = true
-category_icons_only = false
-show_settings_button = true
-show_session_button = true
-show_icons    = true
-show_app_origin_indicator = true
-compact       = true
-app_grid      = false
-track_usage   = true
-sort_by_usage = true
-pinned        = []
-fetch_exchange_rates = true
-provider_prefix = "/"
-auto_paste = "auto"
-
-[shell.launcher.providers.windows]
-prefix = ""
-global = true
-
-[shell.mpris]
-blacklist = []
-
-[shell.window_switcher]
-style = "carousel"
-mru = false
-show_caption = true
-show_count = true
-show_app_icon = true
-
-# ── Wallpaper ─────────────────────────────────────────────────────────────────
-
-[wallpaper]
-enabled             = true
-fill_mode           = "crop"
-fill_color          = ""
-transition          = ["fade", "wipe", "disc", "stripes", "zoom", "honeycomb"]
-transition_duration = 1500
-edge_smoothness     = 0.3
-transition_on_startup = false
-directory           = "/home/iv/.config/backgrounds"
-
-[wallpaper.default]
-path = "/home/iv/.config/backgrounds/background.jpg"
-
-[wallpaper.automation]
-enabled                    = false
-interval_seconds           = 1800
-order                      = "random"
-recursive                  = true
-
-# ── Theme ─────────────────────────────────────────────────────────────────────
-
-[theme]
-mode   = "dark"
-source = "builtin"
-builtin = "Nord"
-community_palette = "Oxocarbon"
-pure_black_dark = false
-wallpaper_scheme = "vibrant"
-
-[theme.templates]
-enable_builtin_templates            = true
-builtin_ids                = [ "gtk3", "gtk4", "ghostty" ]
-enable_community_templates = true
-community_ids              = [ "vscode", "steam" ]
-
-# ── Backdrop ──────────────────────────────────────────────────────────────────
-
-[backdrop]
-enabled                = true
-blur_intensity         = 0.5
-tint_intensity         = 0.3
-
-# ── Notifications ─────────────────────────────────────────────────────────────
-
-[notification]
-enable_daemon      = true
-show_app_name      = true
-show_actions       = true
-keep_dismissed_in_history = true
-layer              = "top"
-scale              = 1.0
-background_opacity = 0.97
-border             = true
-border_color       = "outline"
-border_width       = 1
-follow_focused_output = false
-offset_x           = 20
-offset_y           = 8
-
-# ── OSD ───────────────────────────────────────────────────────────────────────
-
-[osd]
-position = "top_center"
-position_vertical = "top_center"
-orientation = "horizontal"
-hide_delay_ms = 1400
-scale = 1.0
-background_opacity = 0.97
-border = false
-border_color = "outline"
-border_width = 1
-follow_focused_output = false
-offset_x = 20
-offset_y = 8
-
-[osd.kinds]
-bluetooth = true
-brightness = true
-caffeine = true
-dnd = true
-keyboard_backlight = true
-keyboard_layout = true
-lock_keys = true
-media = true
-nightlight = true
-power_profile = true
-privacy = true
-volume = true
-volume_input = true
-volume_output = true
-wifi = true
-
-# ── Lock Screen ───────────────────────────────────────────────────────────────
-
-[lockscreen]
-enabled                 = true
-grace_period_seconds    = 0
-transition              = ["fade", "wipe", "disc", "stripes", "zoom", "honeycomb"]
-transition_duration     = 1500
-edge_smoothness         = 0.3
-blur_intensity          = 0.5
-tint_intensity          = 0.3
-# wallpaper             = ""
-# monitors              = []
-
-# ── System Monitor ────────────────────────────────────────────────────────────
-
-[system.monitor]
-enabled = true
-cpu_poll_seconds = 2.0
-cpu_freq_activity_threshold = 2.5
-cpu_freq_critical_threshold = 4.5
-gpu_poll_seconds = 5.0
-memory_poll_seconds = 2.0
-network_poll_seconds = 3.0
-disk_poll_seconds = 10.0
-cpu_usage_activity_threshold = 50.0
-cpu_usage_critical_threshold = 90.0
-cpu_temp_activity_threshold = 60.0
-cpu_temp_critical_threshold = 85.0
-cpu_temp_sensor_path = ""
-gpu_temp_activity_threshold = 60.0
-gpu_temp_critical_threshold = 85.0
-gpu_usage_activity_threshold = 50.0
-gpu_usage_critical_threshold = 95.0
-gpu_vram_activity_threshold = 50.0
-gpu_vram_critical_threshold = 90.0
-net_rx_activity_threshold = 1.0
-net_rx_critical_threshold = 50.0
-net_tx_activity_threshold = 1.0
-net_tx_critical_threshold = 50.0
-disk_free_activity_threshold = 80.0
-disk_free_critical_threshold = 95.0
-disk_free_pct_activity_threshold = 80.0
-disk_free_pct_critical_threshold = 95.0
-disk_used_activity_threshold = 80.0
-disk_used_critical_threshold = 95.0
-disk_used_pct_activity_threshold = 80.0
-disk_used_pct_critical_threshold = 95.0
-ram_pct_activity_threshold = 60.0
-ram_pct_critical_threshold = 90.0
-swap_pct_activity_threshold = 20.0
-swap_pct_critical_threshold = 80.0
-
-# ── Calendar ──────────────────────────────────────────────────────────────────
-
-[calendar]
-enabled                     = false
-dedupe_events               = false
-dedupe_ignore_patterns      = []
-refresh_minutes             = 15
-event_date_format           = "%A %e %B"
-event_time_format           = "%H:%M"
-
-[calendar.reminders]
-enabled              = true
-use_event_reminders  = true
-default_lead_minutes = 10
-all_day_digest_time  = "09:00"
-
-[control_center.calendar]
-show_events_card            = true
-show_week_numbers           = false
-
-# ── Weather ───────────────────────────────────────────────────────────────────
-
-[weather]
-enabled         = true
-refresh_minutes = 30
-unit            = "celsius"
-effects         = true
-
-# ── Audio ─────────────────────────────────────────────────────────────────────
+ui_scale = 1.0
 
 [audio]
-enable_overdrive = false
-enable_sounds = false
-enable_volume_sounds = true
 enable_notification_sounds = true
+enable_overdrive = false
 enable_power_sounds = true
 enable_screenshot_sounds = true
-sound_volume = 0.5
+enable_sounds = false
+enable_volume_sounds = true
 sound_theme = "freedesktop"
+sound_volume = 0.5
 
-# ── Brightness ────────────────────────────────────────────────────────────────
+[backdrop]
+blur_intensity = 0.5
+enabled = true
+tint_intensity = 0.29999999999999999
+
+[bar.main]
+auto_hide = false
+background_opacity = 0.79999995231628418
+capsule = false
+center = [ "clock" ]
+compositor_blur = true
+end = [ "tray", "notifications", "clipboard", "network", "bluetooth", "volume", "session" ]
+font_scale = 1.0
+layer = "top"
+margin_edge = 0
+margin_ends = 0
+padding = 14
+position = "top"
+radius = 0
+reserve_space = true
+scale = 1.0
+shadow = true
+start = [ "weather" ]
+thickness = 56
+widget_spacing = 25
 
 [brightness]
 enable_ddcutil = true
-# ignore_mmids = []
-# minimum_brightness = 0.0
+sync_all_monitors = true
 
-# ── Night Light ───────────────────────────────────────────────────────────────
+[calendar]
+dedupe_events = false
+dedupe_ignore_patterns = []
+enabled = false
+event_date_format = "%A %e %B"
+event_time_format = "%H:%M"
+refresh_minutes = 15
 
-[nightlight]
-enabled              = false
-force                = false
-temperature_day      = 6500
-temperature_night    = 4000
-
-# ── Location ──────────────────────────────────────────────────────────────────
-
-[location]
-auto_locate      = false
-address          = ""
-
-# ── Idle ──────────────────────────────────────────────────────────────────────
-
-[idle.behavior.lock]
-timeout = 600
-action = "lock"
-enabled = true
-
-[idle.behavior.screen-off]
-timeout = 660
-action = "screen_off"
-enabled = true
-
-# ── Keybinds ──────────────────────────────────────────────────────────────────
-
-[keybinds]
-validate = ["return", "kp_enter", "space"]
-cancel   = ["escape"]
-left     = ["left"]
-right    = ["right"]
-up       = ["up"]
-down     = ["down"]
-tab_next = ["tab"]
-tab_previous = ["shift+iso_left_tab"]
-delete   = ["del"]
-
-# ── Bar ───────────────────────────────────────────────────────────────────────
-
-[bar.main]
-position           = "top"
-thickness          = 56
-background_opacity = 0.79999995231628418
-compositor_blur    = true
-radius             = 0
-margin_ends        = 0
-margin_edge        = 0
-padding            = 14
-widget_spacing     = 25
-scale              = 1.0
-font_scale         = 1.0
-shadow             = true
-auto_hide          = false
-reserve_space      = true
-capsule            = false
-layer              = "top"
-start  = [ "weather" ]
-center = [ "clock" ]
-end    = [ "media", "tray", "notifications", "clipboard", "network", "bluetooth", "volume", "session" ]
-
-# ── Dock ──────────────────────────────────────────────────────────────────────
-
-[dock]
-enabled             = true
-position            = "bottom"
-icon_size           = 48
-main_axis_padding   = 16
-cross_axis_padding  = 8
-item_spacing        = 6
-background_opacity  = 0.87999999523162842
-radius              = 16
-margin_ends         = 0
-margin_edge         = 0
-shadow              = true
-show_running        = true
-auto_hide           = false
-reserve_space       = false
-layer               = "top"
-active_scale        = 1.0
-inactive_scale      = 0.85
-magnification       = true
-magnification_scale = 1.45
-active_opacity      = 1.0
-inactive_opacity    = 0.85
-show_dots           = true
-show_instance_count = true
-launcher_position   = "none"
-launcher_icon       = "grid-dots"
-active_monitor_only = false
-pinned              = []
-# launcher_custom_image = ""
-# launcher_custom_image_colorize = false
-
-# ── Desktop Widgets ───────────────────────────────────────────────────────────
-
-[desktop_widgets]
-enabled = true
-
-# [desktop_widgets.grid]
-# visible        = true
-# cell_size      = 16
-# major_interval = 4
-
-# ── Control Center ────────────────────────────────────────────────────────────
+    [calendar.reminders]
+    all_day_digest_time = "09:00"
+    default_lead_minutes = 10
+    enabled = true
+    use_event_reminders = true
 
 [control_center]
 hidden_tabs = []
@@ -409,6 +63,10 @@ show_shortcut_labels = true
 sidebar = "compact"
 sidebar_section = "compact"
 width = 700
+
+    [control_center.calendar]
+    show_events_card = true
+    show_week_numbers = false
 
     [[control_center.shortcuts]]
     type = "wifi"
@@ -428,7 +86,38 @@ width = 700
     [[control_center.shortcuts]]
     type = "power_profile"
 
-# ── Hooks ─────────────────────────────────────────────────────────────────────
+[desktop_widgets]
+enabled = true
+
+[dock]
+active_monitor_only = false
+active_opacity = 1.0
+active_scale = 1.0
+auto_hide = false
+background_opacity = 0.87999999523162842
+cross_axis_padding = 8
+enabled = true
+icon_size = 48
+inactive_opacity = 0.84999999999999998
+inactive_scale = 0.84999999999999998
+item_spacing = 6
+launcher_icon = "grid-dots"
+launcher_position = "none"
+layer = "top"
+magnification = true
+magnification_scale = 1.45
+main_axis_padding = 16
+margin_edge = 0
+margin_ends = 0
+pinned = []
+position = "bottom"
+radius = 16
+reserve_space = false
+shadow = true
+show_dots = true
+show_instance_count = true
+show_running = true
+smart_auto_hide = true
 
 [hooks]
 battery_charging = []
@@ -450,8 +139,334 @@ wallpaper_changed = []
 wifi_disabled = []
 wifi_enabled = []
 
-# ── Storage ───────────────────────────────────────────────────────────────────
+[idle.behavior.lock]
+action = "lock"
+enabled = true
+timeout = 600
+
+[idle.behavior.screen-off]
+action = "screen_off"
+enabled = true
+timeout = 660
+
+[keybinds]
+cancel = [ "escape" ]
+delete = [ "del" ]
+down = [ "down" ]
+left = [ "left" ]
+right = [ "right" ]
+tab_next = [ "tab" ]
+tab_previous = [ "shift+iso_left_tab" ]
+up = [ "up" ]
+validate = [ "return", "kp_enter", "space" ]
+
+[location]
+address = ""
+auto_locate = true
+
+[lockscreen]
+blur_intensity = 0.5
+edge_smoothness = 0.29999999999999999
+enabled = true
+grace_period_seconds = 0
+tint_intensity = 0.29999999999999999
+transition = [ "fade", "wipe", "disc", "stripes", "zoom", "honeycomb" ]
+transition_duration = 1500
+
+[lockscreen_widgets]
+enabled = false
+schema_version = 2
+widget_order = [ "lockscreen-login-box@DP-1", "lockscreen-login-box@DP-3" ]
+
+    [lockscreen_widgets.grid]
+    cell_size = 16
+    major_interval = 4
+    visible = true
+
+    [lockscreen_widgets.widget."lockscreen-login-box@DP-1"]
+    box_height = 196.0
+    box_width = 810.0
+    cx = 960.0
+    cy = 898.0
+    output = "DP-1"
+    placement_height = 1080.0
+    placement_width = 1920.0
+    rotation = 0.0
+    type = "login_box"
+
+        [lockscreen_widgets.widget."lockscreen-login-box@DP-1".settings]
+        background_color = "surface_variant"
+        background_opacity = 0.88
+        background_radius = 12.0
+        center_password_text = false
+        input_opacity = 1.0
+        input_radius = 6.0
+        layout = "regular"
+        show_caps_lock = true
+        show_keyboard_layout = true
+        show_login_button = true
+        show_media = true
+        show_session_buttons = true
+        show_unlock_hint = true
+        show_weather = true
+
+    [lockscreen_widgets.widget."lockscreen-login-box@DP-3"]
+    box_height = 196.0
+    box_width = 810.0
+    cx = 960.0
+    cy = 898.0
+    output = "DP-3"
+    placement_height = 1080.0
+    placement_width = 1920.0
+    rotation = 0.0
+    type = "login_box"
+
+        [lockscreen_widgets.widget."lockscreen-login-box@DP-3".settings]
+        background_color = "surface_variant"
+        background_opacity = 0.88
+        background_radius = 12.0
+        center_password_text = false
+        input_opacity = 1.0
+        input_radius = 6.0
+        layout = "regular"
+        show_caps_lock = true
+        show_keyboard_layout = true
+        show_login_button = true
+        show_media = true
+        show_session_buttons = true
+        show_unlock_hint = true
+        show_weather = true
+
+[nightlight]
+enabled = false
+force = false
+temperature_day = 6500
+temperature_night = 4000
+
+[notification]
+background_opacity = 0.96999999999999997
+border = true
+border_color = "outline"
+border_width = 1
+enable_daemon = true
+follow_focused_output = false
+keep_dismissed_in_history = true
+layer = "top"
+offset_x = 20
+offset_y = 8
+scale = 1.0
+show_actions = true
+show_app_name = true
+
+[osd]
+background_opacity = 0.96999999999999997
+border = false
+border_color = "outline"
+border_width = 1
+follow_focused_output = false
+hide_delay_ms = 1400
+offset_x = 20
+offset_y = 8
+orientation = "horizontal"
+position = "top_center"
+position_vertical = "top_center"
+scale = 1.0
+
+    [osd.kinds]
+    bluetooth = true
+    brightness = true
+    caffeine = true
+    dnd = true
+    keyboard_backlight = true
+    keyboard_layout = true
+    lock_keys = true
+    media = true
+    nightlight = true
+    power_profile = true
+    privacy = true
+    volume = true
+    volume_input = true
+    volume_output = true
+    wifi = true
+
+[shell]
+app_icon_color = "on_surface"
+app_icon_colorize = false
+clipboard_auto_paste = "auto"
+clipboard_enabled = true
+clipboard_history_max_entries = 100
+clipboard_image_action_command = ""
+clipboard_keep_from_closed_apps = true
+corner_radius_scale = 1.0
+date_format = "%A, %x"
+font_family = "Font Awesome 5 Free Regular"
+lang = ""
+niri_overview_type_to_launch_enabled = false
+offline_mode = false
+password_style = "default"
+polkit_agent = true
+readline_shortcuts = false
+settings_expand_all_groups = false
+settings_show_advanced = true
+shared_gl_context = true
+show_close_buttons = true
+show_location = true
+telemetry_enabled = false
+time_format = "{:%H:%M}"
+
+    [shell.animation]
+    enabled = true
+    speed = 1.0
+
+    [shell.greeter_sync]
+    auto_sync = true
+
+    [shell.launcher]
+    app_grid = false
+    auto_paste = "auto"
+    categories = true
+    category_icons_only = false
+    compact = true
+    default_view = "recent"
+    fetch_exchange_rates = true
+    layout = "full"
+    pinned = []
+    provider_prefix = "/"
+    search_position = "top"
+    show_app_origin_indicator = true
+    show_icons = true
+    show_session_button = true
+    show_settings_button = true
+    sort_by_usage = true
+    track_usage = true
+    width = 760
+
+        [shell.launcher.providers.windows]
+        global = true
+        prefix = ""
+
+    [shell.mpris]
+    blacklist = []
+
+    [shell.panel]
+    border_color = "outline"
+    border_width = 1.0
+    borders = false
+    clipboard_placement = "floating"
+    clipboard_position = "center"
+    control_center_placement = "attached"
+    launcher_placement = "attached"
+    open_near_click_launcher = true
+    polkit_placement = "attached"
+    polkit_position = "center"
+    session_placement = "attached"
+    shadow = true
+    transparency_mode = "glass"
+    wallpaper_placement = "attached"
+
+    [shell.privacy]
+    cam_filter_regex = ""
+    mic_filter_regex = ""
+    screen_filter_regex = ""
+
+    [shell.screenshot]
+    close_on_copy = true
+    close_on_save = true
+    skip_annotate_on_copy_save = false
+
+    [shell.shadow]
+    alpha = 0.55000000000000004
+    direction = "down"
+
+    [shell.window_switcher]
+    mru = false
+    show_app_icon = true
+    show_caption = true
+    show_count = true
+    style = "carousel"
 
 [storage]
 key_file = ""
 key_source = "secret-service"
+
+[system.monitor]
+cpu_freq_activity_threshold = 2.5
+cpu_freq_critical_threshold = 4.5
+cpu_poll_seconds = 2.0
+cpu_temp_activity_threshold = 60.0
+cpu_temp_critical_threshold = 85.0
+cpu_temp_sensor_path = ""
+cpu_usage_activity_threshold = 50.0
+cpu_usage_critical_threshold = 90.0
+disk_free_activity_threshold = 80.0
+disk_free_critical_threshold = 95.0
+disk_free_pct_activity_threshold = 80.0
+disk_free_pct_critical_threshold = 95.0
+disk_poll_seconds = 10.0
+disk_used_activity_threshold = 80.0
+disk_used_critical_threshold = 95.0
+disk_used_pct_activity_threshold = 80.0
+disk_used_pct_critical_threshold = 95.0
+enabled = true
+gpu_poll_seconds = 5.0
+gpu_temp_activity_threshold = 60.0
+gpu_temp_critical_threshold = 85.0
+gpu_usage_activity_threshold = 50.0
+gpu_usage_critical_threshold = 95.0
+gpu_vram_activity_threshold = 50.0
+gpu_vram_critical_threshold = 90.0
+memory_poll_seconds = 2.0
+net_rx_activity_threshold = 1.0
+net_rx_critical_threshold = 50.0
+net_tx_activity_threshold = 1.0
+net_tx_critical_threshold = 50.0
+network_poll_seconds = 3.0
+ram_pct_activity_threshold = 60.0
+ram_pct_critical_threshold = 90.0
+swap_pct_activity_threshold = 20.0
+swap_pct_critical_threshold = 80.0
+
+[theme]
+builtin = "Nord"
+community_palette = "Oxocarbon"
+mode = "dark"
+pure_black_dark = false
+source = "builtin"
+wallpaper_scheme = "vibrant"
+
+    [theme.templates]
+    builtin_ids = [ "gtk3", "gtk4", "ghostty" ]
+    community_ids = [ "vscode", "steam" ]
+    enable_builtin_templates = true
+    enable_community_templates = true
+
+[wallpaper]
+directory = "/home/iv/.config/backgrounds"
+edge_smoothness = 0.29999999999999999
+enabled = true
+fill_color = ""
+fill_mode = "crop"
+transition = [ "fade", "wipe", "disc", "stripes", "zoom", "honeycomb" ]
+transition_duration = 1500
+transition_on_startup = false
+
+    [wallpaper.automation]
+    enabled = false
+    interval_seconds = 1800
+    order = "random"
+    recursive = true
+
+    [wallpaper.default]
+    path = "/home/iv/.config/backgrounds/background.jpg"
+
+    [wallpaper.last]
+    path = "/home/iv/.config/backgrounds/background.jpg"
+
+[weather]
+effects = true
+enabled = true
+refresh_minutes = 30
+unit = "celsius"
+
+[widget.network]
+show_label = false

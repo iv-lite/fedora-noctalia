@@ -5,7 +5,7 @@ layout {
     default-column-display "normal"
     background-color "#2b303cd6"
 
-    default-column-width { proportion 0.75; }
+    default-column-width { proportion 1.0; }
 
     preset-column-widths {
         proportion 0.25
