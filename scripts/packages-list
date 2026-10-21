@@ -16,6 +16,7 @@ export packages=" \
     noctalia \
     polkit-gnome \
     papirus-icon-theme-dark \
+    pavucontrol \
     rustup \
     wlr-protocols-devel \
     xdg-desktop-portal \
