@@ -51,16 +51,28 @@ cd  ${basedir}/../storage \
 ./install.sh --tweaks round -c dark -l
 sudo cp -r $HOME/.themes/Qogir-Round-Dark /usr/share/themes
 
-## hardware acceleration and rpmfusion
+# hardware acceleration and rpmfusion
+# 1. Enable RPM Fusion Free and Nonfree repositories
+echo "Enabling RPM Fusion Repositories..."
 sudo dnf install -y \
-    https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
-    https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm \
-&& sudo dnf -y config-manager setopt fedora-cisco-openh264.enabled=1 \
-&& sudo dnf -y swap ffmpeg-free ffmpeg --allowerasing \
-&& sudo dnf -y update @multimedia \
-    --setopt="install_weak_deps=False" \
-    --exclude=PackageKit-gstreamer-plugin \
-&& sudo dnf -y swap mesa-va-drivers mesa-va-drivers-freeworld \
-&& sudo dnf -y swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld \
-&& sudo dnf -y swap mesa-va-drivers.i686 mesa-va-drivers-freeworld.i686 \
-&& sudo dnf -y swap mesa-vdpau-drivers.i686 mesa-vdpau-drivers-freeworld.i686
+  https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
+  https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+
+# 2. Update package metadata
+echo "Refreshing DNF repositories..."
+sudo dnf check-update || true
+
+# 3. Swap open-source crippled packages for full RPM Fusion versions
+echo "--> Swapping out default codecs for full FFmpeg and Freeworld Mesa..."
+sudo dnf swap -y ffmpeg-free ffmpeg --allowerasing
+sudo dnf swap -y mesa-va-drivers mesa-va-drivers-freeworld
+sudo dnf swap -y mesa-vulkan-drivers mesa-vulkan-drivers-freeworld
+
+# 4. Install 32-bit equivalents for Steam, Wine, and Proton compatibility
+echo "Installing 32-bit driver variations..."
+sudo dnf install -y mesa-va-drivers-freeworld.i686 mesa-vulkan-drivers-freeworld.i686
+
+# 5. Group install extra multimedia packages
+echo "Installing full multimedia system packages..."
+sudo dnf group upgrade -y multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin
+sudo dnf group upgrade -y sound-and-video
