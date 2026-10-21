@@ -40,7 +40,26 @@ sudo systemctl disable --now gdm.service
 # Enable greetd
 sudo systemctl enable  --now greetd.service
 
-sudo mkdir -p /var/lib/noctalia-greeter
-sudo chown -R greeter:greeter /var/lib/noctalia-greeter
-sudo noctalia-greeter passwordless-sync enable ${USER}
-pkexec noctalia-greeter-apply-appearance --sync "/run/user/$(id -u)/noctalia-greeter-sync"
+# Greeter state dir: owned by the greetd session user, mode 0750.
+sudo install -d -o greeter -g greeter -m 0750 /var/lib/noctalia-greeter
+# Creates greeter.toml + sync.toml and hands them to the greetd session user.
+sudo noctalia-greeter-apply-appearance --setup-system
+
+# Let this desktop account sync to the greeter without a prompt.
+sudo noctalia-greeter passwordless-sync enable "${SUDO_USER:-$USER}"
+
+# Push the shell appearance to the greeter. Noctalia Shell owns the staging
+# directory (/run/user/<uid>/noctalia-greeter-sync); the helper only consumes
+# it, so the sync has to be triggered through the shell.
+if noctalia msg color-scheme-get >/dev/null 2>&1; then
+    noctalia msg config-reload
+    sleep 2
+    out="$(noctalia msg greeter-sync 2>&1)" || true
+    case "$out" in
+        ok*) : ;;
+        *"already in progress"*) echo "info: greeter sync already running" ;;
+        *) echo "warn: greeter sync not started: $out" >&2 ;;
+    esac
+else
+    echo "warn: Noctalia Shell is not running; log in and use Settings -> Security -> Noctalia Greeter -> Sync Now" >&2
+fi
