@@ -9,6 +9,7 @@ export packages=" \
     flatpak \
     ghostty \
     qt6-qt5compat \
+    firewall-config \
     fontawesome-fonts-all \
     google-roboto-fonts \
     logiops \
