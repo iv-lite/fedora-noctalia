@@ -13,6 +13,7 @@ export packages=" \
     google-roboto-fonts \
     logiops \
     niri \
+    nm-applet \
     noctalia \
     polkit-gnome \
     papirus-icon-theme-dark \

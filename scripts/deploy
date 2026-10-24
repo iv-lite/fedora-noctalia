@@ -26,6 +26,7 @@ sudo systemctl enable greetd.service
 
 sudo systemctl unmask firewalld
 sudo systemctl enable firewalld
+sudo systemctl restart systemd-resolved
 
 sudo setsebool -P antivirus_can_scan_system 1
 sudo setsebool -P antivirus_use_jit 1

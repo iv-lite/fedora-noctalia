@@ -17,6 +17,7 @@ fi
 
 ${scripts_dir}/packages-fetcher
 ${scripts_dir}/deploy
+sudo ${scripts_dir}/auto-router-sync
 
 read -r -p "Do you want to reboot ? [y/N] " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
