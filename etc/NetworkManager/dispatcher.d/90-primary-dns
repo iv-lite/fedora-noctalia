@@ -1,0 +1,94 @@
+#!/usr/bin/env bash
+set -u
+
+iface="${1:-}"
+action="${2:-}"
+
+case "$action" in
+    up|dhcp4-change|dhcp6-change|reapply|dns-change) ;;
+    *) exit 0 ;;
+esac
+
+if [ -z "$iface" ]; then
+    iface="$(ip -4 route show default 2>/dev/null | awk '{print $5; exit}')"
+    if [ -z "$iface" ]; then
+        iface="$(ip -6 route show default 2>/dev/null | awk '{print $5; exit}')"
+    fi
+fi
+[ -n "$iface" ] || exit 0
+
+type="$(nmcli -g GENERAL.TYPE device show "$iface" 2>/dev/null || true)"
+case "$type" in
+    ethernet|wifi) ;;
+    *) exit 0 ;;
+esac
+
+default_iface="$(ip -4 route show default 2>/dev/null | awk '{print $5; exit}')"
+if [ -n "$default_iface" ] && [ "$default_iface" != "$iface" ]; then
+    exit 0
+fi
+
+gateway4="$(ip -4 route show default 2>/dev/null | awk '{print $3; exit}')"
+servers4="$(nmcli -g IP4.DNS device show "$iface" 2>/dev/null | tr '|' ' ')"
+[ -n "$servers4" ] || servers4="${IP4_NAMESERVERS:-}"
+
+read -r -a v4_servers <<< "$servers4"
+
+primary4=""
+fallback4=""
+for server in "${v4_servers[@]}"; do
+    [ "$server" = "$gateway4" ] && continue
+    [ -n "$fallback4" ] || fallback4="$server"
+    if ! ip -4 route get "$server" 2>/dev/null | grep -q ' via '; then
+        primary4="$server"
+        break
+    fi
+done
+
+[ -n "$primary4" ] || primary4="$fallback4"
+if [ -z "$primary4" ] && [ "${#v4_servers[@]}" -gt 0 ]; then
+    primary4="${v4_servers[0]}"
+fi
+
+servers6="$(nmcli -t -f IP6.DNS device show "$iface" 2>/dev/null | sed -n 's/^IP6.DNS\[[0-9]*\]:/ /p' | tr '\n' ' ')"
+[ -n "$servers6" ] || servers6="${IP6_NAMESERVERS:-}"
+read -r -a v6_servers <<< "$servers6"
+
+primary6=""
+if [ -n "$primary4" ]; then
+    mac4="$(ip neigh show "$primary4" 2>/dev/null | awk '{for (i=1;i<=NF;i++) if ($i=="lladdr") {print $(i+1); exit}}')"
+    if [ -n "$mac4" ]; then
+        for server in "${v6_servers[@]}"; do
+            mac6="$(ip -6 neigh show "$server" 2>/dev/null | awk '{for (i=1;i<=NF;i++) if ($i=="lladdr") {print $(i+1); exit}}')"
+            if [ -n "$mac6" ] && [ "$mac6" = "$mac4" ]; then
+                primary6="$server"
+                break
+            fi
+        done
+    fi
+fi
+
+domains="${IP4_DOMAINS:-} ${IP6_DOMAINS:-}"
+if [ -z "${domains// /}" ]; then
+    domains="$(nmcli -g IP4.DOMAIN,IP4.SEARCHES,IP6.DOMAIN,IP6.SEARCHES device show "$iface" 2>/dev/null | tr '\n' ' ')"
+fi
+if [ -z "${domains// /}" ]; then
+    domains="$(resolvectl domain "$iface" 2>/dev/null | sed -n 's/^Link [0-9]* ([^)]*): //p')"
+fi
+
+servers=()
+[ -n "$primary4" ] && servers+=("$primary4")
+[ -n "$primary6" ] && servers+=("$primary6")
+if [ "${#servers[@]}" -eq 0 ]; then
+    if [ "${#v4_servers[@]}" -gt 0 ]; then
+        servers+=("${v4_servers[0]}")
+    elif [ "${#v6_servers[@]}" -gt 0 ]; then
+        servers+=("${v6_servers[0]}")
+    fi
+fi
+
+[ "${#servers[@]}" -gt 0 ] || exit 0
+
+resolvectl dns "$iface" "${servers[@]}" || exit 0
+resolvectl domain "$iface" $domains "~." || exit 0
+resolvectl flush-caches || true

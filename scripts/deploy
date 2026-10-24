@@ -10,6 +10,8 @@ xdg-mime default org.gnome.Nautilus.desktop x-directory/normal
 xdg-mime default org.gnome.Nautilus.desktop x-directory/gnome-default-handler
 
 sudo cp -r ${basedir}/../etc/* /etc/
+sudo chmod 755 /etc/NetworkManager/dispatcher.d/90-primary-dns
+sudo restorecon -RF /etc/NetworkManager/dispatcher.d
 
 sudo systemctl enable dbus-broker.service
 sudo systemctl enable bluetooth.service
@@ -26,7 +28,26 @@ sudo systemctl enable greetd.service
 
 sudo systemctl unmask firewalld
 sudo systemctl enable firewalld
+sudo systemctl enable systemd-resolved
 sudo systemctl restart systemd-resolved
+sudo ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
+
+iface="$(ip -4 route show default 2>/dev/null | awk '{print $5; exit}')"
+if [ -z "$iface" ]; then
+    iface="$(ip -6 route show default 2>/dev/null | awk '{print $5; exit}')"
+fi
+if [ -n "$iface" ]; then
+    conn="$(nmcli -g GENERAL.CONNECTION device show "$iface" 2>/dev/null || true)"
+    if [ -n "$conn" ]; then
+        sudo nmcli connection modify "$conn" \
+            ipv4.ignore-auto-dns no ipv6.ignore-auto-dns no \
+            ipv4.dns "" ipv4.dns-search "" \
+            ipv6.dns "" ipv6.dns-search ""
+        sudo nmcli connection down "$conn" || true
+        sudo nmcli connection up "$conn"
+    fi
+fi
+sudo resolvectl flush-caches
 
 sudo setsebool -P antivirus_can_scan_system 1
 sudo setsebool -P antivirus_use_jit 1
