@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+cd "$(dirname "${BASH_SOURCE[0]}")"
+
+# The installer downloads a tarball and needs curl + tar.
+for cmd in curl tar; do
+    if ! command -v "${cmd}" >/dev/null 2>&1; then
+        sudo dnf install -y "${cmd}"
+    fi
+done
+
+opencode_bin="${HOME}/.opencode/bin/opencode"
+old_version="$("${opencode_bin}" --version 2>/dev/null || echo "not installed")"
+
+# No version pin: always fetch and install the latest release.
+curl -fsSL https://opencode.ai/v2/install | bash
+
+new_version="$("${opencode_bin}" --version 2>/dev/null || echo "unknown")"
+printf 'opencode: %s -> %s\n' "${old_version}" "${new_version}"

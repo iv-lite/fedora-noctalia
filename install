@@ -16,6 +16,7 @@ if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
 fi
 
 ${scripts_dir}/packages-fetcher
+${scripts_dir}/install-opencode
 ${scripts_dir}/deploy
 
 read -r -p "Do you want to reboot ? [y/N] " response

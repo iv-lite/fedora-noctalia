@@ -3,6 +3,27 @@
 cd "$(dirname ${BASH_SOURCE[0]})"
 basedir="$(pwd)"
 
+# Back up an existing OpenCode config before the merge below overwrites files.
+opencode_config="${HOME}/.config/opencode"
+if [[ -d "${opencode_config}" ]] && [[ -n "$(find "${opencode_config}" -mindepth 1 -maxdepth 1 -print -quit)" ]]; then
+    backup_root="${XDG_STATE_HOME:-${HOME}/.local/state}/opencode/backups"
+    if ! mkdir -p "${backup_root}"; then
+        printf 'error: could not create %s; aborting deploy\n' "${backup_root}" >&2
+        exit 1
+    fi
+    if ! backup_dir="$(mktemp -d "${backup_root}/config-$(date +%Y%m%d-%H%M%S).XXXXXX")"; then
+        printf 'error: could not create a backup of %s; aborting deploy\n' "${opencode_config}" >&2
+        exit 1
+    fi
+    if ! cp -a "${opencode_config}" "${backup_dir}/opencode"; then
+        printf 'error: failed to back up %s; aborting deploy\n' "${opencode_config}" >&2
+        rm -rf -- "${backup_dir}"
+        exit 1
+    fi
+    printf 'Backed up %s to %s\n' "${opencode_config}" "${backup_dir}"
+    printf 'To restore: cp -a "%s/opencode/." "%s/"\n' "${backup_dir}" "${opencode_config}"
+fi
+
 cp -r ${basedir}/../home/.config/* ${HOME}/.config/
 
 xdg-mime default org.gnome.Nautilus.desktop inode/directory
