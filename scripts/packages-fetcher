@@ -65,13 +65,11 @@ sudo dnf check-update || true
 # 3. Swap open-source crippled packages for full RPM Fusion versions
 echo "--> Swapping out default codecs for full FFmpeg and Freeworld Mesa..."
 sudo dnf swap -y ffmpeg-free ffmpeg --allowerasing
-sudo dnf swap -y mesa-va-drivers mesa-va-drivers-freeworld
-sudo dnf swap -y mesa-vulkan-drivers mesa-vulkan-drivers-freeworld
+sudo dnf install -y @multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin
 
 # 4. Install 32-bit equivalents for Steam, Wine, and Proton compatibility
-echo "Installing 32-bit driver variations..."
-sudo dnf install -y mesa-va-drivers-freeworld.i686 mesa-vulkan-drivers-freeworld.i686
-
-# 5. Group install extra multimedia packages
-echo "Installing full multimedia system packages..."
-sudo dnf group upgrade -y multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin
+echo "Installing drivers..."
+sudo dnf install mesa-va-drivers-freeworld
+sudo dnf swap mesa-vulkan-drivers{,-freeworld}
+sudo dnf install mesa-va-drivers-freeworld.i686
+sudo dnf swap mesa-vulkan-drivers{,-freeworld}.i686
