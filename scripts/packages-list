@@ -13,6 +13,7 @@ export packages=" \
     fontawesome-fonts-all \
     google-roboto-fonts \
     logiops \
+    mission-center \
     niri \
     nm-applet \
     noctalia \

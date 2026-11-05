@@ -17,6 +17,9 @@ echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com
 sudo dnf copr enable -y alternateved/cliphist
 sudo dnf copr enable -y scottames/ghostty
 
+# noctalia and mission-center are shipped by Terra.
+sudo dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
+
 sudo dnf check-update
 
 . ${basedir}/packages-list
@@ -25,8 +28,6 @@ sudo dnf install -y --skip-unavailable \
     ${packages}
 
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-
-flatpak install -y flathub io.missioncenter.MissionCenter
 
 rustup-init -y
 . "$HOME/.cargo/env"
@@ -37,19 +38,37 @@ sudo dnf install  -y \
 cargo install wayland-pipewire-idle-inhibit
 
 # noctalia greeter
-sudo dnf install --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
-sudo dnf install noctalia-greeter greetd greetd-selinux
+sudo dnf install -y noctalia-greeter greetd greetd-selinux
 
 ## gtk theme
-sudo dnf install \
+sudo dnf install -y \
     gtk-murrine-engine \
     gtk2-engines \
     sassc
-cd  ${basedir}/../storage \
-&& git clone https://github.com/vinceliuice/Qogir-theme.git \
-&& cd Qogir-theme
-./install.sh --tweaks round -c dark -l
-sudo cp -r $HOME/.themes/Qogir-Round-Dark /usr/share/themes
+
+theme_dir="${basedir}/../storage/Qogir-theme"
+if [[ -d "${theme_dir}/.git" ]]; then
+    git -C "${theme_dir}" pull --ff-only || true
+else
+    rm -rf -- "${theme_dir}"
+    git clone https://github.com/vinceliuice/Qogir-theme.git "${theme_dir}"
+fi
+
+mkdir -p "${HOME}/.themes"
+"${theme_dir}/install.sh" --tweaks round -c dark -d "${HOME}/.themes"
+
+# Older installer runs used Qogir's `-l` option, which symlinked these paths
+# into the theme and made Noctalia's GTK4 import resolve in the wrong place.
+for f in gtk.css gtk-dark.css assets; do
+    p="${HOME}/.config/gtk-4.0/${f}"
+    target="$(readlink -- "${p}" 2>/dev/null || true)"
+    if [[ -L "${p}" && "${target}" == */Qogir-Round-Dark/gtk-4.0/* ]]; then
+        rm -f -- "${p}"
+    fi
+done
+
+sudo rm -rf /usr/share/themes/Qogir-Round-Dark
+sudo cp -r "${HOME}/.themes/Qogir-Round-Dark" /usr/share/themes/
 
 # hardware acceleration and rpmfusion
 # 1. Enable RPM Fusion Free and Nonfree repositories
