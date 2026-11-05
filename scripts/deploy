@@ -26,6 +26,11 @@ fi
 
 cp -r ${basedir}/../home/.config/* ${HOME}/.config/
 
+# Keep Flatpak apps in sync with the host GTK theme.
+if command -v flatpak >/dev/null 2>&1; then
+    "${basedir}/flatpak-theme" Qogir-Round-Dark
+fi
+
 xdg-mime default org.gnome.Nautilus.desktop inode/directory
 xdg-mime default org.gnome.Nautilus.desktop x-directory/normal
 xdg-mime default org.gnome.Nautilus.desktop x-directory/gnome-default-handler

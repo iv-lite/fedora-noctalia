@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+theme="${1:-Qogir-Round-Dark}"
+
+if ! command -v flatpak >/dev/null 2>&1; then
+    printf 'error: flatpak is not installed\n' >&2
+    exit 1
+fi
+
+if [[ ! -d "${HOME}/.themes/${theme}" ]]; then
+    printf 'warning: GTK theme not found at %s\n' "${HOME}/.themes/${theme}" >&2
+fi
+
+# Flatpak apps cannot see ~/.themes or /usr/share/themes by default. Expose
+# the host theme and GTK config read-only, and force the theme because the
+# sandbox does not inherit the host's gsettings state.
+flatpak override --user \
+    --filesystem=~/.themes:ro \
+    --filesystem=xdg-config/gtk-3.0:ro \
+    --filesystem=xdg-config/gtk-4.0:ro \
+    --env=GTK_THEME="${theme}"
+
+printf 'Applied Flatpak theme overrides for %s\n' "${theme}"

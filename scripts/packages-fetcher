@@ -70,6 +70,10 @@ done
 sudo rm -rf /usr/share/themes/Qogir-Round-Dark
 sudo cp -r "${HOME}/.themes/Qogir-Round-Dark" /usr/share/themes/
 
+# Flatpak apps are sandboxed and cannot read ~/.themes or /usr/share/themes,
+# so expose the host theme and GTK config to them explicitly.
+"${basedir}/flatpak-theme" Qogir-Round-Dark
+
 # hardware acceleration and rpmfusion
 # 1. Enable RPM Fusion Free and Nonfree repositories
 echo "Enabling RPM Fusion Repositories..."
