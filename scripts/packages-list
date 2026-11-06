@@ -17,6 +17,9 @@ export packages=" \
     niri \
     nm-applet \
     noctalia \
+    oo7-daemon \
+    oo7-portal \
+    pam_oo7 \
     polkit-gnome \
     papirus-icon-theme-dark \
     pavucontrol \

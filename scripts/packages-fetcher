@@ -27,6 +27,23 @@ sudo dnf check-update
 sudo dnf install -y --skip-unavailable \
     ${packages}
 
+# Fedora 45+ uses oo7 for the Secret Service. Upgrades can leave the old
+# gnome-keyring daemon installed; it keeps owning org.freedesktop.secrets, so
+# the password greetd hands to pam_oo7 can never unlock the login keyring.
+# Remove it once the oo7 stack is present. Keyring data is only backed up,
+# never deleted; oo7 migrates it on the next login.
+if rpm -q oo7-daemon pam_oo7 >/dev/null 2>&1 && rpm -q gnome-keyring >/dev/null 2>&1; then
+    keyring_dir="${XDG_DATA_HOME:-${HOME}/.local/share}/keyrings"
+    if [[ -d "${keyring_dir}" ]]; then
+        keyring_backup="${keyring_dir}-backup-$(date +%Y%m%d-%H%M%S)"
+        cp -a -- "${keyring_dir}" "${keyring_backup}"
+        printf 'Backed up keyrings to %s\n' "${keyring_backup}"
+    fi
+    printf 'Removing stale gnome-keyring; oo7 will manage the login keyring after the next login.\n'
+    printf 'If the login keyring password differs from your login password, oo7 will keep it locked.\n'
+    sudo dnf remove -y --no-autoremove gnome-keyring
+fi
+
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
 rustup-init -y
