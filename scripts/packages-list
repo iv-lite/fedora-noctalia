@@ -7,7 +7,6 @@ export packages=" \
     clamav-freshclam \
     clamtk \
     flatpak \
-    ghostty \
     qt6-qt5compat \
     firewall-config \
     fontawesome-fonts-all \

@@ -17,8 +17,31 @@ echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com
 sudo dnf copr enable -y alternateved/cliphist
 sudo dnf copr enable -y scottames/ghostty
 
-# noctalia and mission-center are shipped by Terra.
+# Ghostty exists in both Terra and this COPR; install it from the COPR only.
+# Only pass --disablerepo when Terra is configured, otherwise dnf errors out
+# on a fresh system where the repo does not exist yet.
+terra_args=()
+if dnf repolist --all --quiet 2>/dev/null | awk '{print $1}' | grep -qx 'terra'; then
+    terra_args=(--disablerepo=terra)
+fi
+sudo dnf install -y "${terra_args[@]}" ghostty
+
+ghostty_repo="$(dnf repoquery --installed --qf '%{from_repo}' ghostty)"
+case "${ghostty_repo}" in
+    copr:copr.fedorainfracloud.org:scottames:ghostty*) ;;
+    *)
+        printf 'error: ghostty is not from the scottames/ghostty COPR (got: %s)\n' \
+            "${ghostty_repo}" >&2
+        exit 1
+        ;;
+esac
+
+# mission-center and noctalia-greeter are shipped by Terra; noctalia
+# itself now comes from Fedora.
 sudo dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
+
+# Never let Terra provide or upgrade ghostty.
+sudo dnf config-manager setopt terra.excludepkgs=ghostty
 
 sudo dnf check-update
 
