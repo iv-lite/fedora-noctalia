@@ -40,8 +40,8 @@ esac
 # itself now comes from Fedora.
 sudo dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
 
-# Never let Terra provide or upgrade ghostty.
-sudo dnf config-manager setopt terra.excludepkgs=ghostty
+# Never let Terra provide or upgrade any ghostty package.
+sudo dnf config-manager setopt 'terra.excludepkgs=ghostty*'
 
 sudo dnf check-update
 
