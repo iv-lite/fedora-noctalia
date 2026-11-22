@@ -3,6 +3,7 @@ high_contrast = false
 ui_scale = 1.0
 
 [audio]
+colorize_icons = false
 enable_notification_sounds = true
 enable_overdrive = false
 enable_power_sounds = true
@@ -23,14 +24,16 @@ background_opacity = 0.79999995231628418
 capsule = false
 center = [ "clock" ]
 compositor_blur = true
+concave_edge_corners = false
 end = [ "tray", "notifications", "clipboard", "network", "bluetooth", "volume", "session" ]
 font_scale = 1.0
+hover_highlight = false
 layer = "top"
-margin_edge = 0
-margin_ends = 0
+margin_edge = 18
+margin_ends = 21
 padding = 14
 position = "top"
-radius = 0
+radius = 8
 reserve_space = true
 scale = 1.0
 shadow = true
@@ -95,6 +98,7 @@ active_opacity = 1.0
 active_scale = 1.0
 auto_hide = false
 background_opacity = 0.87999999523162842
+colorize_icons = false
 cross_axis_padding = 8
 enabled = true
 icon_size = 48
@@ -195,7 +199,7 @@ widget_order = [ "lockscreen-login-box@DP-1", "lockscreen-login-box@DP-3" ]
     type = "login_box"
 
         [lockscreen_widgets.widget."lockscreen-login-box@DP-1".settings]
-        background_color = "surface_variant"
+        background_color = "surface_container"
         background_opacity = 0.88
         background_radius = 12.0
         center_password_text = false
@@ -222,7 +226,7 @@ widget_order = [ "lockscreen-login-box@DP-1", "lockscreen-login-box@DP-3" ]
     type = "login_box"
 
         [lockscreen_widgets.widget."lockscreen-login-box@DP-3".settings]
-        background_color = "surface_variant"
+        background_color = "surface_container"
         background_opacity = 0.88
         background_radius = 12.0
         center_password_text = false
@@ -246,8 +250,9 @@ temperature_night = 4000
 [notification]
 background_opacity = 0.96999999999999997
 border = true
-border_color = "outline"
+border_color = "outline_variant"
 border_width = 1
+colorize_icons = false
 enable_daemon = true
 follow_focused_output = false
 keep_dismissed_in_history = true
@@ -261,7 +266,7 @@ show_app_name = true
 [osd]
 background_opacity = 0.96999999999999997
 border = false
-border_color = "outline"
+border_color = "outline_variant"
 border_width = 1
 follow_focused_output = false
 hide_delay_ms = 1400
@@ -291,7 +296,6 @@ scale = 1.0
 
 [shell]
 app_icon_color = "on_surface"
-app_icon_colorize = false
 clipboard_auto_paste = "auto"
 clipboard_enabled = true
 clipboard_history_max_entries = 100
@@ -305,7 +309,9 @@ niri_overview_type_to_launch_enabled = false
 offline_mode = false
 password_style = "default"
 polkit_agent = true
+polkit_colorize_icons = false
 readline_shortcuts = false
+screen_time_colorize_icons = false
 settings_expand_all_groups = false
 settings_show_advanced = true
 shared_gl_context = true
@@ -325,10 +331,11 @@ time_format = "{:%H:%M}"
     app_grid = false
     auto_paste = "auto"
     categories = true
-    category_icons_only = false
+    category_icons_only = true
+    colorize_icons = false
     compact = true
     default_view = "recent"
-    fetch_exchange_rates = true
+    fetch_exchange_rates = false
     layout = "full"
     pinned = []
     provider_prefix = "/"
@@ -338,18 +345,18 @@ time_format = "{:%H:%M}"
     show_session_button = true
     show_settings_button = true
     sort_by_usage = true
-    track_usage = true
+    track_usage = false
     width = 760
 
         [shell.launcher.providers.windows]
-        global = true
+        global = false
         prefix = ""
 
     [shell.mpris]
     blacklist = []
 
     [shell.panel]
-    border_color = "outline"
+    border_color = "outline_variant"
     border_width = 1.0
     borders = false
     clipboard_placement = "floating"
@@ -379,6 +386,7 @@ time_format = "{:%H:%M}"
     direction = "down"
 
     [shell.window_switcher]
+    colorize_icons = false
     mru = false
     show_app_icon = true
     show_caption = true
@@ -468,5 +476,20 @@ enabled = true
 refresh_minutes = 30
 unit = "celsius"
 
+[widget.active_window]
+colorize_icons = false
+
+[widget.clock]
+format = "{:%H:%M} {:%d/%m/%Y}"
+
 [widget.network]
 show_label = false
+
+[widget.taskbar]
+colorize_icons = false
+
+[widget.tray]
+colorize_icons = false
+
+[widget.workspaces]
+colorize_icons = false

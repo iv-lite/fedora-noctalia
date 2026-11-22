@@ -26,6 +26,33 @@ fi
 
 cp -r ${basedir}/../home/.config/* ${HOME}/.config/
 
+# Noctalia merges GUI-managed overrides from its state directory over the
+# deployed config. The repo config is exported from the live merged config, so
+# remove stale overrides to keep the deployed file authoritative.
+noctalia_state="${XDG_STATE_HOME:-${HOME}/.local/state}/noctalia"
+if [[ -f "${noctalia_state}/settings.toml" ]]; then
+    noctalia_backups="${noctalia_state}/backups"
+    if ! mkdir -p "${noctalia_backups}"; then
+        printf 'error: could not create %s; aborting deploy\n' "${noctalia_backups}" >&2
+        exit 1
+    fi
+    if ! noctalia_backup="$(mktemp --suffix=.toml "${noctalia_backups}/settings-$(date +%Y%m%d-%H%M%S).XXXXXX")"; then
+        printf 'error: could not create a Noctalia settings backup; aborting deploy\n' >&2
+        exit 1
+    fi
+    if ! cp -a "${noctalia_state}/settings.toml" "${noctalia_backup}"; then
+        printf 'error: failed to back up %s; aborting deploy\n' "${noctalia_state}/settings.toml" >&2
+        exit 1
+    fi
+    printf 'Backed up Noctalia settings to %s\n' "${noctalia_backup}"
+    rm -f "${noctalia_state}/settings.toml"
+fi
+
+if command -v noctalia >/dev/null 2>&1; then
+    noctalia config validate "${HOME}/.config/noctalia/config.toml"
+    noctalia msg config-reload >/dev/null 2>&1 || true
+fi
+
 # Keep Flatpak apps in sync with the host GTK theme.
 if command -v flatpak >/dev/null 2>&1; then
     "${basedir}/flatpak-theme" Qogir-Round-Dark
